@@ -8,9 +8,20 @@ import (
 )
 
 func main() {
-	port := os.Args[1]
+	var port string
+	var path string
+	params := os.Args
+	if len(params) > 1 {
+		port = os.Args[1]
+	} else {
+		port = "8001"
+	}
+	if len(params) > 2 {
+		path = os.Args[2]
+	} else {
+		path = "."
+	}
 	fmt.Printf("Starting server at port %s\n", port)
-	path := os.Args[2]
 	fileServer := http.FileServer(http.Dir(path))
 	http.Handle("/", fileServer)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
